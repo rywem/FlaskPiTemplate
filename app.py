@@ -1,20 +1,17 @@
-from flask import Flask, render_template, request
-import RPi.GPIO as GPIO
+from flask import Flask, render_template, redirect, url_for
+from gpio_service import toggle_led, get_led_status
 
 app = Flask(__name__)
-led_pin = 18
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(led_pin, GPIO.OUT)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    status = get_led_status()
+    return render_template('index.html', status=status)
 
 @app.route('/toggle')
-def toggle_led():
-    GPIO.output(led_pin, not GPIO.input(led_pin))
-    return 'LED toggled!'
+def toggle():
+    toggle_led()
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80)
-
+    app.run(host='0.0.0.0', port=5000)

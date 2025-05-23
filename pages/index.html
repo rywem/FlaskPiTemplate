@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
+<p>LED is currently: <strong>{{ 'ON' if status else 'OFF' }}</strong></p>
+<a class="btn btn-primary" href="{{ url_for('toggle') }}">Toggle LED</a>
+{% endblock %}
